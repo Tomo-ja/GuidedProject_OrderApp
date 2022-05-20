@@ -37,6 +37,12 @@ class MenuItemDetailViewController: UIViewController {
         nameLabel.text = menuItem.name
         priceLabel.text = menuItem.price.formatted(.currency(code: "usd"))
         detailTetLabel.text = menuItem.detailText
+        
+        Task.init{
+            if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL){
+                imageView.image = image
+            }
+        }
     }
     @IBAction func orderButtonTapped(_ sender: UIButton) {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.1, options: [], animations: {

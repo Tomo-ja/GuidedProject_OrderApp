@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class MenuController{
     static let shared = MenuController()
@@ -23,6 +24,7 @@ class MenuController{
         case categoriesNotFound
         case menuItemsNotFound
         case orderRequestFailed
+        case imageDataMissing
     }
     
     func fetchCategories() async throws -> [String]{
@@ -52,6 +54,19 @@ class MenuController{
         let decoder = JSONDecoder()
         let menuResponse = try decoder.decode(MenuResponse.self, from: data)
         return menuResponse.items
+    }
+    
+    func fetchImage(from url: URL) async throws -> UIImage{
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            throw MenuControllerError.imageDataMissing
+        }
+        guard let image = UIImage(data: data) else {
+            throw MenuControllerError.imageDataMissing
+        }
+        
+        return image
     }
     
     typealias MinutesToPrepare = Int // to make clear what return

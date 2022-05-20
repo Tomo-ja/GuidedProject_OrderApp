@@ -39,12 +39,21 @@ class OrderTableViewController: UITableViewController {
     }
     
     func configure(_ cell:UITableViewCell, forItemAt indexPath: IndexPath){
+        guard let cell = cell as? MenuItemCell else { return }
+        
         let menuItem = MenuController.shared.order.menuItems[indexPath.row]
         
-        var content = cell.defaultContentConfiguration()
-        content.text = menuItem.name
-        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-        cell.contentConfiguration = content
+        cell.itemName = menuItem.name
+        cell.price = menuItem.price
+        cell.image = nil
+
+        Task.init{
+            if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL){
+                if let currentIndexPath = self.tableView.indexPath(for: cell), currentIndexPath == indexPath{
+                    cell.image = image
+                }
+            }
+        }
     }
 
     // Override to support conditional editing of the table view.
@@ -102,6 +111,8 @@ class OrderTableViewController: UITableViewController {
     }
     
     @IBAction func unwindToOrderList(segue: UIStoryboardSegue){
-        
+        if segue.identifier == "dismissConfirmation"{
+            MenuController.shared.order.menuItems.removeAll()
+        }
     }
 }

@@ -178,7 +178,7 @@
             </objects>
             <point key="canvasLocation" x="2376.811594202899" y="906.69642857142856"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Your Order-->
         <scene sceneID="zsB-tA-rfk">
             <objects>
                 <tableViewController id="p4a-5X-Qg5" customClass="OrderTableViewController" customModule="GuidedProject_OrderApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -217,7 +217,7 @@
                             <outlet property="delegate" destination="p4a-5X-Qg5" id="p3A-Ma-40W"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="R5f-OB-DNx"/>
+                    <navigationItem key="navigationItem" title="Your Order" id="R5f-OB-DNx"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e2n-8Y-fZI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

@@ -217,11 +217,69 @@
                             <outlet property="delegate" destination="p4a-5X-Qg5" id="p3A-Ma-40W"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Your Order" id="R5f-OB-DNx"/>
+                    <navigationItem key="navigationItem" title="Your Order" id="R5f-OB-DNx">
+                        <barButtonItem key="rightBarButtonItem" title="Submit" id="Pe2-vc-mP2">
+                            <connections>
+                                <action selector="submitTapped:" destination="p4a-5X-Qg5" id="fZC-gh-ioJ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="gqY-jp-9Yg" kind="modal" identifier="comfirmOrder" destinationCreationSelector="confirmOrder:" id="768-6U-2DN"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e2n-8Y-fZI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="406" y="1604"/>
+        </scene>
+        <!--Order Confirmation View Controller-->
+        <scene sceneID="F4A-Ve-yxS">
+            <objects>
+                <viewController id="gqY-jp-9Yg" customClass="OrderConfirmationViewController" customModule="GuidedProject_OrderApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8aV-Hl-ylg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ao4-v5-dTK">
+                                <rect key="frame" x="30" y="381.5" width="354" height="79.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DcI-pu-QHh">
+                                        <rect key="frame" x="0.0" y="0.0" width="354" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ga3-7B-0TV">
+                                        <rect key="frame" x="140" y="48.5" width="74.5" height="31"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Dismiss"/>
+                                        <connections>
+                                            <segue destination="DA5-bV-Ocf" kind="unwind" identifier="dismissConfirmation" unwindAction="unwindToOrderListWithSegue:" id="nB8-8E-Hz5"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="DcI-pu-QHh" firstAttribute="width" secondItem="Ao4-v5-dTK" secondAttribute="width" id="f7K-cU-pFM"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="aoG-bC-ACP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ao4-v5-dTK" firstAttribute="leading" secondItem="aoG-bC-ACP" secondAttribute="leading" constant="30" id="Jia-m9-STj"/>
+                            <constraint firstItem="aoG-bC-ACP" firstAttribute="trailing" secondItem="Ao4-v5-dTK" secondAttribute="trailing" constant="30" id="K9a-5P-ffn"/>
+                            <constraint firstItem="Ao4-v5-dTK" firstAttribute="centerY" secondItem="8aV-Hl-ylg" secondAttribute="centerY" id="le8-eB-8qG"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="x9d-Rj-Jaa"/>
+                    <connections>
+                        <outlet property="confirmationLabel" destination="DcI-pu-QHh" id="HWj-TC-lwb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wOy-6a-5jJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="DA5-bV-Ocf" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1403" y="1604"/>
         </scene>
         <!--Your Order-->
         <scene sceneID="E7C-Xa-Bz2">

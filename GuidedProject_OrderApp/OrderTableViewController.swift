@@ -8,6 +8,8 @@
 import UIKit
 
 class OrderTableViewController: UITableViewController {
+    
+    var minutesToPrepareOrder = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,30 +62,46 @@ class OrderTableViewController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    
+    @IBAction func submitTapped(_ sender: UIBarButtonItem) {
+        let orderTotal = MenuController.shared.order.menuItems.reduce(0.0) {(result, menuItem) -> Double in
+            return result + menuItem.price
+        }
+        
+        let formattedTotal = orderTotal.formatted(.currency(code: "usd"))
+        let alertController = UIAlertController(title: "Cofirm Order", message: "You are about to submit your order with a total of \(formattedTotal)", preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Submit", style: .default, handler: {_ in
+            self.uploadOrder()
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    func uploadOrder(){
+        let menuIDs = MenuController.shared.order.menuItems.map { $0.id }
+        Task.init{
+            do{
+                let minutesToPrepare = try await MenuController.shared.submitOrder(forMenuIDs: menuIDs)
+                minutesToPrepareOrder = minutesToPrepare
+                performSegue(withIdentifier: "comfirmOrder", sender: nil)
+            }catch{
+                displayError(error, title: "Order Submission Failed")
+            }
+        }
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func displayError(_ error: Error, title: String){
+        guard let _ = viewIfLoaded?.window else {return}
+        let alert = UIAlertController(title: title, message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
-    */
-
+    
+    @IBSegueAction func confirmOrder(_ coder: NSCoder) -> OrderConfirmationViewController? {
+        return OrderConfirmationViewController(coder: coder, minutesToPrepare: minutesToPrepareOrder)
+    }
+    
+    @IBAction func unwindToOrderList(segue: UIStoryboardSegue){
+        
+    }
 }
